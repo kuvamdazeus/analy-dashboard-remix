@@ -2,6 +2,7 @@ import { createCookie, LoaderArgs, redirect } from "@remix-run/node";
 import { json } from "react-router";
 import { client } from "~/prisma-client";
 import { GH_CLIENT_ID } from "~/config";
+import { userCookie } from "~/cookies";
 
 export const loader = async ({ request, params, context }: LoaderArgs) => {
   const code = new URL(request.url).searchParams.get("code");
@@ -37,7 +38,5 @@ export const loader = async ({ request, params, context }: LoaderArgs) => {
     },
   });
 
-  const cookie = createCookie("user", { sameSite: "strict", secrets: [process.env.COOKIE_SECRET as string] });
-
-  return redirect("/dashboard", { headers: { "Set-Cookie": await cookie.serialize(id) } });
+  return redirect("/dashboard", { headers: { "Set-Cookie": await userCookie.serialize(id) } });
 };
