@@ -20,7 +20,7 @@ export default function Dashboard() {
       <p className="text-3xl">
         Dashboard
         <br />
-        <img src={user.avatar_url} className="" />
+        {/* <img src={user.avatar_url} className="" /> */}
       </p>
     </div>
   );
