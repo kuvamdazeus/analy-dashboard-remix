@@ -38,8 +38,8 @@ model Session {
   id          String  @id
   user_hash   String
   project_key String
+  
   events      Event[]
-
   project Project @relation(fields: [project_key], references: [key])
 }
 
