@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { ActionArgs, LoaderArgs, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import type { User, Project } from "@prisma/client";
 import { userCookie } from "~/cookies";
 import { client } from "~/prisma-client.server";
 import useUserStore from "~/state/user";
 import verifyUser from "~/middlewares/verifyUser";
+import NavProject from "~/components/Dashboard/NavProject";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await verifyUser(request);
@@ -24,6 +25,7 @@ export type OutletContext = {
 
 export default function Dashboard() {
   const user = useLoaderData<typeof loader>();
+  const location = useLocation();
 
   const { setUser } = useUserStore();
 
@@ -31,10 +33,12 @@ export default function Dashboard() {
     setUser(user);
   }, []);
 
+  const displayProjectName = /dashboard\/.+\-.+\-.+/.test(location.pathname);
+
   return (
     <div className="h-screen">
-      <nav className="px-5 py-5 flex justify-between bg-white border-b border-dashed border-gray-400">
-        <div />
+      <nav className="px-5 py-5 flex items-center justify-between bg-white border-b border-dashed border-gray-400">
+        {displayProjectName ? <NavProject /> : <div />}
 
         <div className="flex items-center">
           <div className="rounded p-1 pr-3 border bg-gray-100 -mr-2.5">
