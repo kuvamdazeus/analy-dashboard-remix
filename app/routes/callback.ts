@@ -1,6 +1,5 @@
-import { createCookie, LoaderArgs, redirect } from "@remix-run/node";
-import { json } from "react-router";
-import { client } from "~/prisma-client";
+import { LoaderArgs, redirect } from "@remix-run/node";
+import { client } from "~/prisma-client.server";
 import { GH_CLIENT_ID } from "~/config";
 import { userCookie } from "~/cookies";
 

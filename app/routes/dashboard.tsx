@@ -1,14 +1,15 @@
 import { useEffect } from "react";
-import type { LoaderArgs } from "@remix-run/node";
+import { ActionArgs, LoaderArgs, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import type { User, Project } from "@prisma/client";
 import { userCookie } from "~/cookies";
-import { client } from "~/prisma-client";
+import { client } from "~/prisma-client.server";
 import useUserStore from "~/state/user";
+import verifyUser from "~/middlewares/verifyUser";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const userId = await userCookie.parse(request.headers.get("Cookie") || "");
+  const userId = await verifyUser(request);
 
   const user = await client.user.findUniqueOrThrow({ where: { id: userId }, include: { projects: true } });
 

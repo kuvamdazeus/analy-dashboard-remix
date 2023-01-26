@@ -25,6 +25,7 @@ model Project {
   id String @id @default(uuid())
 
   name    String
+  url     String
   key     String @unique
   user_id String
 

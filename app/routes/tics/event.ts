@@ -1,5 +1,5 @@
 import { ActionArgs, json } from "@remix-run/node";
-import { client } from "~/prisma-client";
+import { client } from "~/prisma-client.server";
 
 export const action = async ({ request }: ActionArgs) => {
   const { session, event } = await request.json();
