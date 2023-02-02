@@ -8,6 +8,7 @@ import { client } from "~/prisma-client.server";
 import useUserStore from "~/state/user";
 import verifyUser from "~/middlewares/verifyUser";
 import NavProject from "~/components/Dashboard/NavProject";
+import { Box } from "@chakra-ui/react";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await verifyUser(request);
@@ -41,12 +42,12 @@ export default function Dashboard() {
         {displayProjectName ? <NavProject /> : <div />}
 
         <div className="flex items-center">
-          <div className="rounded p-1 pr-3 border bg-gray-100 -mr-2.5">
+          <Box border="1px" borderColor="gray.100" bg="gray.50" className="rounded p-1 pr-3 -mr-2.5">
             <p className="text-sm font-bold">
               <span className="text-md text-gray-500 mr-0.5 font-bold">@</span>
               {user.username}
             </p>
-          </div>
+          </Box>
 
           <img
             src={user.avatar_url}

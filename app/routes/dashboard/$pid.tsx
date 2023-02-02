@@ -1,32 +1,36 @@
+import { Box, HStack } from "@chakra-ui/react";
 import { json, LoaderArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { ClientOnly } from "remix-utils";
+import DashboardChart from "~/components/Dashboard/DashboardChart";
+import Summary from "~/components/Dashboard/Summary";
+import TopPages from "~/components/Dashboard/TopPages";
+import { get7DaysChartData, getPagesSummaryData, getTodaySummaryData } from "~/helpers/data.server";
 import verifyUser from "~/middlewares/verifyUser";
-import { client } from "~/prisma-client.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
   await verifyUser(request);
 
-  const projectId = new URL(request.url).pathname.split("/").at(-1);
+  const projectId = new URL(request.url).pathname.split("/").at(-1) as string;
 
-  const project = await client.project.findUniqueOrThrow({
-    where: { id: projectId },
-    include: {
-      user: true,
-      sessions: {
-        take: 100,
-      },
-    },
-  });
+  const [summaryData, pagesSummaryData, chartData] = await Promise.all([
+    getTodaySummaryData(projectId),
+    getPagesSummaryData(projectId),
+    get7DaysChartData(projectId),
+  ]);
 
-  return json(project);
+  return json({ summaryData, pagesSummaryData, chartData }, { status: 200 });
 };
 
 export default function DashboardProject() {
-  const project = useLoaderData<typeof loader>();
-
   return (
-    <div>
-      <p>Project: {project.key}</p>
-    </div>
+    <Box className="p-5 bg-gray-100 h-full">
+      <HStack spacing="5" mb="5" h="64">
+        <Summary />
+
+        <TopPages />
+      </HStack>
+
+      <ClientOnly>{() => <DashboardChart />}</ClientOnly>
+    </Box>
   );
 }

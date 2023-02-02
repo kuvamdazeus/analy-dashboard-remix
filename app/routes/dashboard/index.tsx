@@ -1,3 +1,4 @@
+import { Divider, HStack } from "@chakra-ui/react";
 import { LoaderArgs, json, ActionArgs, redirect } from "@remix-run/node";
 import { useOutletContext } from "@remix-run/react";
 import { SHA256 } from "crypto-js";
@@ -39,16 +40,16 @@ export default function Index() {
   const { user } = useOutletContext<OutletContext>();
 
   return (
-    <section className="flex flex-wrap items-center p-5">
-      {user.projects.length === 0 ? (
-        <CreateProject />
-      ) : (
-        <>
-          {user.projects.map((project) => (
-            <Project key={project.id} project={project} />
-          ))}
-        </>
-      )}
+    <section className="p-5">
+      <HStack flexWrap="wrap" alignItems="center" spacing={5}>
+        {user.projects.map((project) => (
+          <Project key={project.id} project={project} />
+        ))}
+      </HStack>
+
+      <Divider className="my-5" />
+
+      <CreateProject />
     </section>
   );
 }
