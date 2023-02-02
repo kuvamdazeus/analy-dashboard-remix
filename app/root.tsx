@@ -57,7 +57,11 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-        <div analy-key="bdeb62c0be50aa23365688ebcfb67af23dce03a03b84a0b81391097089a8aec4" />
+        <div
+          id="analy-config"
+          analy-base-url="http://localhost:3000"
+          analy-key="bdeb62c0be50aa23365688ebcfb67af23dce03a03b84a0b81391097089a8aec4"
+        />
       </body>
     </html>
   );

@@ -13,8 +13,6 @@ export const action = async ({ request }: ActionArgs) => {
     if (path) parsedUrl += isDynamicPath(path) ? "/[...]" : `/${path}`;
   });
 
-  console.log(session, event);
-
   await client.session.upsert({
     where: {
       id: session.id,

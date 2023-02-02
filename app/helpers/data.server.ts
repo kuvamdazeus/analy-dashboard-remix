@@ -104,7 +104,5 @@ export const get7DaysChartData = async (projectId: string) => {
     },
   });
 
-  console.log("EVENT LENGTH", chartData.length);
-
   return chartData;
 };
