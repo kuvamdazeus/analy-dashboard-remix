@@ -1,4 +1,4 @@
-# Analy was made with ♥️ in Remix.js!
+# Analy Dashboard is made with ♥️ in Remix.js!
 
 - [Remix Docs](https://remix.run/docs)
 
