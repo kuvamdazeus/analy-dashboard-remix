@@ -35,24 +35,10 @@ export default function DashboardChart() {
   );
 
   return (
-    <>
-      <Box
-        flexGrow={1}
-        border="1px"
-        borderColor="gray.100"
-        borderTopColor="white"
-        className="bg-white rounded-lg p-3 h-1/2"
-      >
-        {/* <ResponsiveContainer className="mb-5">
-          <LineChart data={timeRangeData}>
-            <XAxis dataKey="name" />
-            <YAxis dataKey="views" />
-            <Line type="monotone" dataKey="views" stroke="#1e1896" />
-          </LineChart>
-        </ResponsiveContainer> */}
-
+    <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-1">
+      <Box flexGrow={1} borderTopColor="white" className="bg-white h-1/2">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </Box>
-    </>
+    </Box>
   );
 }
