@@ -36,13 +36,13 @@ model Project {
 }
 
 model Session {
-  id          String  @id
+  id          String @id
   user_hash   String
   project_key String
-  
-  created_at  DateTime @default(now())
-  
-  events      Event[]
+
+  created_at DateTime @default(now())
+
+  events  Event[]
   project Project @relation(fields: [project_key], references: [key])
 }
 
@@ -52,6 +52,8 @@ model Event {
 
   name       String
   window_url String
+  referrer   String   @default("")
+  country    String   @default("")
   parsed_url String
   created_at DateTime
   // ...more

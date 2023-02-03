@@ -604,12 +604,12 @@ video {
   margin-right: 0px;
 }
 
-.mb-5 {
-  margin-bottom: 1.25rem;
-}
-
 .mr-1 {
   margin-right: 0.25rem;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
 }
 
 .mb-2 {
@@ -818,22 +818,6 @@ video {
 
 .pr-3 {
   padding-right: 0.75rem;
-}
-
-.pb-3 {
-  padding-bottom: 0.75rem;
-}
-
-.pb-7 {
-  padding-bottom: 1.75rem;
-}
-
-.pt-3 {
-  padding-top: 0.75rem;
-}
-
-.pb-10 {
-  padding-bottom: 2.5rem;
 }
 
 .text-sm {
