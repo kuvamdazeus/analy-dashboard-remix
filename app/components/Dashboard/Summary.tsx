@@ -7,7 +7,7 @@ export default function Summary() {
 
   return (
     <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 h-full w-1/2">
-      <p className="text-2xl font-semibold mb-5">Summary</p>
+      <p className="text-xl font-bold mb-5">Summary</p>
 
       <Box className="flex justify-between items-center mb-2">
         <p className="text-sm font-bold text-gray-500 tracking-wide">UNIQUE VISITS</p>

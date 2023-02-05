@@ -9,7 +9,7 @@ export default function TopPages() {
 
   return (
     <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 h-full w-1/2 overflow-y-auto">
-      <p className="text-2xl font-semibold mb-5">Top Pages</p>
+      <p className="text-xl font-bold mb-5">Top Pages</p>
 
       {pagesSummaryData
         .sort((a, b) => b._count._all - a._count._all)
