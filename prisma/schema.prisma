@@ -52,11 +52,11 @@ model Event {
 
   name       String
   window_url String
+  date       String
   referrer   String   @default("")
   country    String   @default("")
   parsed_url String
   created_at DateTime
-  // ...more
 
   session Session @relation(fields: [session_id], references: [id])
 }

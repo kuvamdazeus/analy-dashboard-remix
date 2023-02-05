@@ -3,9 +3,12 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import { useChartData } from "~/helpers/data.client";
 import { useMemo } from "react";
+import { loader } from "~/routes/dashboard/$pid";
+import { useLoaderData } from "@remix-run/react";
 
 export default function DashboardChart() {
-  const { timeRangeData } = useChartData();
+  // const { timeRangeData } = useChartData();
+  const { chartData } = useLoaderData<typeof loader>();
 
   const options: Highcharts.Options = useMemo(
     () => ({
@@ -14,7 +17,7 @@ export default function DashboardChart() {
       },
       series: [
         {
-          data: timeRangeData.map((item) => item.views),
+          data: chartData.map((item) => item._count._all),
           type: "line",
         },
       ],
@@ -23,7 +26,7 @@ export default function DashboardChart() {
         title: {
           text: "Days",
         },
-        categories: timeRangeData.map((item) => item.name),
+        categories: chartData.map((item) => item.date),
       },
       yAxis: {
         title: {
@@ -31,7 +34,7 @@ export default function DashboardChart() {
         },
       },
     }),
-    [timeRangeData]
+    [chartData]
   );
 
   return (

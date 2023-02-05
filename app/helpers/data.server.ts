@@ -89,8 +89,29 @@ export const getPagesSummaryData = async (projectId: string) => {
   return pagesSummaryData;
 };
 
+export const getReferrerData = async (projectId: string) => {
+  const referrerData = await client.event.groupBy({
+    where: {
+      session: {
+        project: {
+          id: projectId,
+        },
+      },
+      referrer: {
+        not: "",
+      },
+    },
+    by: ["referrer"],
+    _count: {
+      _all: true,
+    },
+  });
+
+  return referrerData;
+};
+
 export const get7DaysChartData = async (projectId: string) => {
-  const chartData = await client.event.findMany({
+  const chartData = await client.event.groupBy({
     where: {
       session: {
         project: {
@@ -98,9 +119,13 @@ export const get7DaysChartData = async (projectId: string) => {
         },
       },
       name: "page_load",
-      created_at: {
-        gte: new Date(new Date().setDate(new Date().getDate() - 7)),
-      },
+    },
+    by: ["date"],
+    orderBy: {
+      date: "asc",
+    },
+    _count: {
+      _all: true,
     },
   });
 
