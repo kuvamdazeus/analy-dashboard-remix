@@ -1,6 +1,9 @@
 # Analy Dashboard is made with ♥️ in Remix.js!
 
+### Quicklinks
 - [Remix Docs](https://remix.run/docs)
+- [NPM package (analy)](https://www.npmjs.com/package/analy)
+- [Github repo (analy)](https://github.com/kuvamdazeus/analy)
 
 ## Development
 
