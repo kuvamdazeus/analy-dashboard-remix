@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useFetcher, useLoaderData } from "@remix-run/react";
-import { useState } from "react";
-import type { getCountryData, getReferrerData } from "~/helpers/data.server";
+import { useEffect, useState } from "react";
+import type { getCountryData } from "~/helpers/data.server";
 import type { loader } from "~/routes/dashboard/$pid";
 
 export default function TopSources() {
@@ -12,12 +12,12 @@ export default function TopSources() {
   const [fetchMode, setFetchMode] = useState<"referrers" | "countries">("referrers");
 
   const fetchBy = (mode: typeof fetchMode) => {
-    if (mode === "countries") {
-      countries.load(`${window.location.pathname}/data?type=country`);
-    }
-
     setFetchMode(mode);
   };
+
+  useEffect(() => {
+    countries.load(`${window.location.pathname}/data?type=country`);
+  }, []);
 
   const totalPageViews =
     fetchMode === "referrers"
