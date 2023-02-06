@@ -1,5 +1,5 @@
 import { useLoaderData } from "@remix-run/react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { loader } from "~/routes/dashboard/$pid";
 
 type TimeRange = {

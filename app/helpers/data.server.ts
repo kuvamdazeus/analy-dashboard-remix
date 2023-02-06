@@ -1,6 +1,26 @@
 import { client } from "~/prisma-client.server";
+import type { Duration } from "~/types";
 
-export const getTodaySummaryData = async (projectId: string) => {
+const getGte = (duration: Duration) => {
+  switch (duration) {
+    case "today":
+      return new Date(Date.now() - 24 * 60 * 60 * 1000);
+    case "7d":
+      return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    case "1m":
+      return new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    case "3m":
+      return new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+    case "1y":
+      return new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+    case "5y":
+      return new Date(Date.now() - 5 * 365 * 24 * 60 * 60 * 1000);
+    case "all":
+      return new Date(0);
+  }
+};
+
+export const getSummaryData = async (projectId: string, duration: Duration = "today") => {
   const [uniquePageVisits, pageViews, sessions] = await Promise.all([
     client.event.count({
       where: {
@@ -11,7 +31,7 @@ export const getTodaySummaryData = async (projectId: string) => {
         },
         name: "user_init",
         created_at: {
-          gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+          gte: getGte(duration),
         },
       },
     }),
@@ -24,7 +44,7 @@ export const getTodaySummaryData = async (projectId: string) => {
         },
         name: "page_load",
         created_at: {
-          gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+          gte: getGte(duration),
         },
       },
     }),
@@ -34,7 +54,7 @@ export const getTodaySummaryData = async (projectId: string) => {
           id: projectId,
         },
         created_at: {
-          gte: new Date(new Date().setDate(new Date().getDate() - 1)),
+          gte: getGte(duration),
         },
       },
       include: {
@@ -71,7 +91,7 @@ export const getTodaySummaryData = async (projectId: string) => {
   return { uniquePageVisits, pageViews, sessionsCount, avgSessionsDuration };
 };
 
-export const getPagesSummaryData = async (projectId: string) => {
+export const getPagesSummaryData = async (projectId: string, duration: Duration = "all") => {
   const pagesSummaryData = await client.event.groupBy({
     where: {
       session: {
@@ -110,7 +130,7 @@ export const getReferrerData = async (projectId: string) => {
   return referrerData;
 };
 
-export const get7DaysChartData = async (projectId: string) => {
+export const getChartData = async (projectId: string, duration: Duration = "7d") => {
   const chartData = await client.event.groupBy({
     where: {
       session: {
@@ -119,6 +139,9 @@ export const get7DaysChartData = async (projectId: string) => {
         },
       },
       name: "page_load",
+      created_at: {
+        gte: getGte(duration),
+      },
     },
     by: ["date"],
     orderBy: {
@@ -130,4 +153,25 @@ export const get7DaysChartData = async (projectId: string) => {
   });
 
   return chartData;
+};
+
+export const getCountryData = async (projectId: string) => {
+  const countryData = await client.event.groupBy({
+    where: {
+      session: {
+        project: {
+          id: projectId,
+        },
+      },
+      country: {
+        not: "",
+      },
+    },
+    by: ["country"],
+    _count: {
+      _all: true,
+    },
+  });
+
+  return countryData;
 };

@@ -3,7 +3,7 @@ import { client } from "~/prisma-client.server";
 import { GH_CLIENT_ID } from "~/config";
 import { userCookie } from "~/cookies";
 
-export const loader = async ({ request, params, context }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderArgs) => {
   const code = new URL(request.url).searchParams.get("code");
 
   const { access_token } = await fetch("https://github.com/login/oauth/access_token", {

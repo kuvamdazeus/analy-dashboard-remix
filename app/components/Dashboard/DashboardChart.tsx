@@ -1,13 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { useChartData } from "~/helpers/data.client";
 import { useMemo } from "react";
 import { loader } from "~/routes/dashboard/$pid";
 import { useLoaderData } from "@remix-run/react";
 
 export default function DashboardChart() {
-  // const { timeRangeData } = useChartData();
   const { chartData } = useLoaderData<typeof loader>();
 
   const options: Highcharts.Options = useMemo(
