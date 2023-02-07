@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Badge, Box } from "@chakra-ui/react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import { useFetcher, useLocation } from "@remix-run/react";
@@ -56,12 +56,31 @@ export default function RealtimeStats() {
   }, [stats.data]);
 
   useEffect(() => {
+    let interval: any = null;
+
     stats.load(`${window.location.pathname}/data?type=realtime`);
+
+    // set a minute interval to load stats only when the window is in focus
+    interval = setInterval(() => {
+      if (document.hasFocus()) {
+        stats.load(`${window.location.pathname}/data?type=realtime`);
+      }
+    }, 60 * 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [location]);
 
   return (
     <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 w-2/3">
-      <p className="text-xl font-bold mb-5">Realtime Stats</p>
+      <div className="flex items-center mb-5">
+        <p className="text-xl font-bold mr-2">Realtime Stats</p>
+
+        <div>
+          <Badge colorScheme="red">Live</Badge>
+        </div>
+      </div>
 
       <Box flexGrow={1} borderTopColor="white" className="bg-white">
         <HighchartsReact highcharts={Highcharts} options={options} />
