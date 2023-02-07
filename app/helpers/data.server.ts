@@ -175,3 +175,23 @@ export const getCountryData = async (projectId: string) => {
 
   return countryData;
 };
+
+export const getRealtimeData = async (projectId: string) => {
+  const realtimeData = await client.event.findMany({
+    where: {
+      session: {
+        project: {
+          id: projectId,
+        },
+      },
+      created_at: {
+        gte: new Date(Date.now() - 60 * 60 * 1000),
+      },
+    },
+    orderBy: {
+      created_at: "asc",
+    },
+  });
+
+  return realtimeData;
+};

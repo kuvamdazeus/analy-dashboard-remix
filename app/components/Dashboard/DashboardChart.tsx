@@ -2,8 +2,7 @@ import { Box, Select } from "@chakra-ui/react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import { useEffect, useMemo } from "react";
-import { loader } from "~/routes/dashboard/$pid";
-import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
+import { useFetcher, useLocation } from "@remix-run/react";
 import type { getChartData } from "~/helpers/data.server";
 import { DURATIONS } from "~/constants";
 

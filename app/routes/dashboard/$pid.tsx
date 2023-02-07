@@ -1,6 +1,7 @@
 import { Box, HStack } from "@chakra-ui/react";
 import { json, LoaderArgs } from "@remix-run/node";
 import DashboardChart from "~/components/Dashboard/DashboardChart";
+import RealtimeStats from "~/components/Dashboard/RealtimeStats";
 import Summary from "~/components/Dashboard/Summary";
 import TopPages from "~/components/Dashboard/TopPages";
 import TopSources from "~/components/Dashboard/TopSources";
@@ -24,7 +25,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function DashboardProject() {
   return (
-    <Box className="p-5 bg-gray-100 h-full">
+    <Box className="p-5 bg-gray-100">
       <HStack spacing="5" mb="5" h="64">
         <Summary />
 
@@ -34,6 +35,10 @@ export default function DashboardProject() {
       </HStack>
 
       <DashboardChart />
+
+      <HStack spacing="5" my="5">
+        <RealtimeStats />
+      </HStack>
     </Box>
   );
 }

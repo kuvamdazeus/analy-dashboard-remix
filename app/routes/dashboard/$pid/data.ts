@@ -3,6 +3,7 @@ import {
   getChartData,
   getCountryData,
   getPagesSummaryData,
+  getRealtimeData,
   getReferrerData,
   getSummaryData,
 } from "~/helpers/data.server";
@@ -27,5 +28,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       return json(await getReferrerData(projectId));
     case "country":
       return json(await getCountryData(projectId));
+    case "realtime":
+      return json(await getRealtimeData(projectId));
   }
 };
