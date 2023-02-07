@@ -1,6 +1,5 @@
 import { Box, HStack } from "@chakra-ui/react";
-import { ActionArgs, json, LoaderArgs } from "@remix-run/node";
-import { ClientOnly } from "remix-utils";
+import { json, LoaderArgs } from "@remix-run/node";
 import DashboardChart from "~/components/Dashboard/DashboardChart";
 import Summary from "~/components/Dashboard/Summary";
 import TopPages from "~/components/Dashboard/TopPages";
@@ -34,7 +33,7 @@ export default function DashboardProject() {
         <TopSources />
       </HStack>
 
-      <ClientOnly>{() => <DashboardChart />}</ClientOnly>
+      <DashboardChart />
     </Box>
   );
 }

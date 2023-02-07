@@ -1,18 +1,20 @@
 import { Box, Select } from "@chakra-ui/react";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData, useLocation } from "@remix-run/react";
 import { DURATIONS } from "~/constants";
-import type { loader } from "~/routes/dashboard/$pid";
 import type { getSummaryData } from "~/helpers/data.server";
+import { useEffect } from "react";
 
 export default function Summary() {
-  const fetcher = useFetcher<typeof getSummaryData>();
-  const { summaryData } = useLoaderData<typeof loader>();
-
-  const summary = fetcher.data || summaryData;
+  const location = useLocation();
+  const summary = useFetcher<typeof getSummaryData>();
 
   const fetchSummaryData = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    fetcher.load(`${window.location.pathname}/data?type=summary&duration=${e.target.value}`);
+    summary.load(`${window.location.pathname}/data?type=summary&duration=${e.target.value}`);
   };
+
+  useEffect(() => {
+    summary.load(`${window.location.pathname}/data?type=summary&duration=today`);
+  }, [location]);
 
   return (
     <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 h-full w-1/2">
@@ -39,7 +41,7 @@ export default function Summary() {
         <p className="text-sm font-bold text-gray-500 tracking-wide">UNIQUE VISITS</p>
 
         <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
-          <p className="mr-3">{summary.uniquePageVisits}</p>
+          <p className="mr-3">{summary.data && summary.data.uniquePageVisits}</p>
 
           <p>-</p>
         </Box>
@@ -49,7 +51,7 @@ export default function Summary() {
         <p className="text-sm font-bold text-gray-500 tracking-wide">PAGE VIEWS</p>
 
         <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
-          <p className="mr-3">{summary.pageViews}</p>
+          <p className="mr-3">{summary.data && summary.data.pageViews}</p>
 
           <p>-</p>
         </Box>
@@ -59,7 +61,7 @@ export default function Summary() {
         <p className="text-sm font-bold text-gray-500 tracking-wide">SESSION COUNT</p>
 
         <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
-          <p className="mr-3">{summary.sessionsCount}</p>
+          <p className="mr-3">{summary.data && summary.data.sessionsCount}</p>
 
           <p>-</p>
         </Box>
@@ -69,7 +71,7 @@ export default function Summary() {
         <p className="text-sm font-bold text-gray-500 tracking-wide">AVG. SESSION TIME</p>
 
         <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
-          <p className="mr-3">{Math.round(summary.avgSessionsDuration)}s</p>
+          <p className="mr-3">{summary.data && Math.round(summary.data.avgSessionsDuration)}s</p>
 
           <p>-</p>
         </Box>

@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLocation } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import type { getCountryData } from "~/helpers/data.server";
-import type { loader } from "~/routes/dashboard/$pid";
+import type { getCountryData, getReferrerData } from "~/helpers/data.server";
 
 export default function TopSources() {
-  const countries = useFetcher<typeof getCountryData>();
+  const location = useLocation();
 
-  const { referrerData } = useLoaderData<typeof loader>();
+  const countries = useFetcher<typeof getCountryData>();
+  const referrers = useFetcher<typeof getReferrerData>();
 
   const [fetchMode, setFetchMode] = useState<"referrers" | "countries">("referrers");
 
@@ -17,14 +17,16 @@ export default function TopSources() {
 
   useEffect(() => {
     countries.load(`${window.location.pathname}/data?type=country`);
-  }, []);
+    referrers.load(`${window.location.pathname}/data?type=referrer`);
+  }, [location]);
 
-  const totalPageViews =
-    fetchMode === "referrers"
-      ? referrerData.reduce((acc, pageData) => acc + pageData._count._all, 0)
-      : countries.data
-      ? countries.data.reduce((acc, pageData) => acc + pageData._count._all, 0)
-      : 0;
+  let totalPageViews = 0;
+
+  if (fetchMode === "referrers" && referrers.data) {
+    totalPageViews = referrers.data.reduce((acc, referrerData) => acc + referrerData._count._all, 0);
+  } else if (fetchMode === "countries" && countries.data) {
+    totalPageViews = countries.data.reduce((acc, countryData) => acc + countryData._count._all, 0);
+  }
 
   return (
     <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 h-full w-1/2 overflow-y-auto">
@@ -56,7 +58,8 @@ export default function TopSources() {
       </div>
 
       {fetchMode === "referrers" &&
-        referrerData
+        referrers.data &&
+        referrers.data
           .sort((a, b) => b._count._all - a._count._all)
           .map((source) => {
             return (

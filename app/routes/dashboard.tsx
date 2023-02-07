@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import { ActionArgs, LoaderArgs, redirect } from "@remix-run/node";
+import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import type { User, Project } from "@prisma/client";
-import { userCookie } from "~/cookies";
 import { client } from "~/prisma-client.server";
 import useUserStore from "~/state/user";
 import verifyUser from "~/middlewares/verifyUser";
 import NavProject from "~/components/Dashboard/NavProject";
 import { Box } from "@chakra-ui/react";
+import { ClientOnly } from "remix-utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await verifyUser(request);
@@ -56,7 +56,7 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      <Outlet context={{ user }} />
+      <ClientOnly>{() => <Outlet context={{ user }} />}</ClientOnly>
     </div>
   );
 }
