@@ -63,13 +63,13 @@ export default function TopSources() {
           .sort((a, b) => b._count._all - a._count._all)
           .map((source) => {
             return (
-              <Box key={source.referrer} className="relative py-3 px-3 mb-1">
+              <Box key={source.referrer} className="relative p-2 mb-1">
                 <Box
                   style={{ width: `${(source._count._all / totalPageViews) * 100}%` }}
                   className="absolute top-0 left-0 z-0 h-full bg-blue-100"
                 />
 
-                <p className="sticky text-sm font-light text-gray-700 tracking-wide">{source.referrer}</p>
+                <p className="sticky text-xs font-light text-gray-700 tracking-wide">{source.referrer}</p>
               </Box>
             );
           })}
@@ -80,13 +80,13 @@ export default function TopSources() {
           .sort((a, b) => b._count._all - a._count._all)
           .map((source) => {
             return (
-              <Box key={source.country} className="relative py-3 px-3 mb-1">
+              <Box key={source.country} className="relative p-2 mb-1">
                 <Box
                   style={{ width: `${(source._count._all / totalPageViews) * 100}%` }}
                   className="absolute top-0 left-0 z-0 h-full bg-blue-100"
                 />
 
-                <p className="sticky text-sm font-light text-gray-700 tracking-wide">{source.country}</p>
+                <p className="sticky text-xs font-light text-gray-700 tracking-wide">{source.country}</p>
               </Box>
             );
           })}

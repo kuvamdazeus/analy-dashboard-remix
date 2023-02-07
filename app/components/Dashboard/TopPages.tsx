@@ -27,13 +27,13 @@ export default function TopPages() {
             const count = pageData._count._all;
 
             return (
-              <Box key={pathname} className="relative py-3 px-3 mb-1">
+              <Box key={pathname} className="relative p-2 mb-1">
                 <Box
                   style={{ width: `${(count / totalPageViews) * 100}%` }}
                   className="absolute top-0 left-0 z-0 h-full bg-orange-100"
                 />
 
-                <p className="sticky text-sm font-light text-gray-700 tracking-wide">{pathname}</p>
+                <p className="sticky text-xs font-light text-gray-700 tracking-wide">{pathname}</p>
               </Box>
             );
           })}
