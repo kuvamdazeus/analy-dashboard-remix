@@ -29,6 +29,7 @@ model Project {
   key     String @unique
   user_id String
 
+  is_public Boolean @default(false)
   created_at DateTime @default(now())
 
   sessions Session[]
