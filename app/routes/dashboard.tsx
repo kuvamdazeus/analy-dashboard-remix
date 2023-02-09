@@ -5,23 +5,40 @@ import { Outlet, useLoaderData, useLocation } from "@remix-run/react";
 import type { User, Project } from "@prisma/client";
 import { client } from "~/prisma-client.server";
 import useUserStore from "~/state/user";
-import verifyUser from "~/middlewares/verifyUser";
 import NavProject from "~/components/Dashboard/NavProject";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { ClientOnly } from "remix-utils";
+import { userCookie } from "~/cookies";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const userId = await verifyUser(request);
+  const userId = await userCookie.parse(request.headers.get("Cookie") || "");
 
-  const user = await client.user.findUniqueOrThrow({ where: { id: userId }, include: { projects: true } });
+  if (!userId) {
+    const projectId = new URL(request.url).pathname.split("/").at(-1) as string;
+    const project = await client.project.findUniqueOrThrow({ where: { id: projectId } });
 
-  return json(user, { status: userId ? 200 : 401 });
+    const user = {
+      id: "",
+      avatar_url: "",
+      email: "johndoe@gmail.com",
+      username: "johndoe_8734",
+      name: "John Doe",
+      projects: [project] as Project[],
+    };
+
+    return json(user as Data);
+  } else {
+    const user = await client.user.findUniqueOrThrow({ where: { id: userId }, include: { projects: true } });
+    return json(user as Data);
+  }
+};
+
+export type Data = User & {
+  projects: Project[];
 };
 
 export type OutletContext = {
-  user: User & {
-    projects: Project[];
-  };
+  user: Data;
 };
 
 export default function Dashboard() {
@@ -41,19 +58,23 @@ export default function Dashboard() {
       <nav className="px-5 py-5 flex items-center justify-between bg-white border-b border-dashed border-gray-400">
         {displayProjectName ? <NavProject /> : <div />}
 
-        <div className="flex items-center">
-          <Box border="1px" borderColor="gray.100" bg="gray.50" className="rounded p-1 pr-3 -mr-2.5">
-            <p className="text-sm font-bold">
-              <span className="text-md text-gray-500 mr-0.5 font-bold">@</span>
-              {user.username}
-            </p>
-          </Box>
+        {user.id && (
+          <div className="flex items-center">
+            <Box border="1px" borderColor="gray.100" bg="gray.50" className="rounded p-1 pr-3 -mr-2.5">
+              <p className="text-sm font-bold">
+                <span className="text-md text-gray-500 mr-0.5 font-bold">@</span>
+                {user.username}
+              </p>
+            </Box>
 
-          <img
-            src={user.avatar_url}
-            className="h-12 w-12 object-contain rounded-full border-2 border-gray-500"
-          />
-        </div>
+            <img
+              src={user.avatar_url}
+              className="h-12 w-12 object-contain rounded-full border-2 border-gray-500"
+            />
+          </div>
+        )}
+
+        {!user.id && <Button>Sign in</Button>}
       </nav>
 
       <ClientOnly>{() => <Outlet context={{ user }} />}</ClientOnly>
