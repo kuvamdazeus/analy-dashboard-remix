@@ -73,7 +73,7 @@ export default function RealtimeStats() {
   }, [location]);
 
   return (
-    <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 w-2/3">
+    <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 w-1/2">
       <div className="flex items-center mb-5">
         <p className="text-xl font-bold mr-2">Realtime Stats</p>
 
