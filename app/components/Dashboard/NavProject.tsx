@@ -2,7 +2,7 @@ import { Badge, HStack, Tooltip } from "@chakra-ui/react";
 import { useLoaderData, useLocation, useNavigate } from "@remix-run/react";
 import { useState } from "react";
 import { FiCopy } from "react-icons/fi";
-import { loader } from "~/routes/dashboard";
+import type { loader } from "~/routes/dashboard";
 
 export default function NavProject() {
   const user = useLoaderData<typeof loader>();
@@ -14,6 +14,8 @@ export default function NavProject() {
 
   const [isPublic, setIsPublic] = useState<undefined | boolean>(currentProject?.is_public);
   const [showCopiedText, setShowCopiedText] = useState(false);
+
+  const isUnsafe = !user.id;
 
   const makeProjectPublic = async () => {
     if (!currentProject) return;
@@ -41,18 +43,27 @@ export default function NavProject() {
       </select>
 
       <Tooltip label={`Make ${isPublic ? "private" : "public"}`}>
-        <Badge mr="2" colorScheme={isPublic ? "green" : "red"} cursor="pointer" onClick={makeProjectPublic}>
+        <Badge
+          mr="2"
+          colorScheme={isPublic ? "green" : "red"}
+          cursor="pointer"
+          onClick={isUnsafe ? () => {} : makeProjectPublic}
+        >
           {isPublic ? "Public" : "Private"}
         </Badge>
       </Tooltip>
 
       <HStack
         className="text-lg text-purple-500 cursor-pointer"
-        onClick={() => {
-          setShowCopiedText(true);
-          setTimeout(() => setShowCopiedText(false), 1000);
-          navigator.clipboard.writeText(currentProject?.key || "");
-        }}
+        onClick={
+          isUnsafe
+            ? () => {}
+            : () => {
+                setShowCopiedText(true);
+                setTimeout(() => setShowCopiedText(false), 1000);
+                navigator.clipboard.writeText(currentProject?.key || "");
+              }
+        }
       >
         <FiCopy />
 

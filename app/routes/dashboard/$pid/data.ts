@@ -1,4 +1,4 @@
-import { json, LoaderArgs, LoaderFunction, TypedResponse } from "@remix-run/node";
+import { json, LoaderArgs, redirect } from "@remix-run/node";
 import {
   getChartData,
   getCountryData,
@@ -7,13 +7,20 @@ import {
   getReferrerData,
   getSummaryData,
 } from "~/helpers/data.server";
-import verifyUser from "~/middlewares/verifyUser";
+import { verifyUserNoRedirect } from "~/middlewares/verifyUser";
+import { client } from "~/prisma-client.server";
 import { Duration, RequestDataType } from "~/types";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  await verifyUser(request);
-
+  const userId = await verifyUserNoRedirect(request);
   const projectId = new URL(request.url).pathname.split("/").at(-2) as string;
+
+  if (!userId) {
+    const project = await client.project.findUniqueOrThrow({ where: { id: projectId } });
+
+    if (!project.is_public) return redirect("/");
+  }
+
   const type = new URL(request.url).searchParams.get("type") as RequestDataType;
   const duration = new URL(request.url).searchParams.get("duration") as Duration;
 

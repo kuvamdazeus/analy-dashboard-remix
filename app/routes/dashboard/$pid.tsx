@@ -10,8 +10,6 @@ import verifyUser from "~/middlewares/verifyUser";
 import { client } from "~/prisma-client.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  await verifyUser(request);
-
   const projectId = new URL(request.url).pathname.split("/").at(-1) as string;
 
   const [summaryData, pagesSummaryData, referrerData, chartData] = await Promise.all([
