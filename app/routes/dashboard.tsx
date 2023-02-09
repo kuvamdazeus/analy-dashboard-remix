@@ -9,6 +9,7 @@ import NavProject from "~/components/Dashboard/NavProject";
 import { Box, Button } from "@chakra-ui/react";
 import { ClientOnly } from "remix-utils";
 import { userCookie } from "~/cookies";
+import { GITHUB_OAUTH_URI } from "~/config";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await userCookie.parse(request.headers.get("Cookie") || "");
@@ -74,7 +75,16 @@ export default function Dashboard() {
           </div>
         )}
 
-        {!user.id && <Button>Sign in</Button>}
+        {!user.id && (
+          <Button
+            bg="purple.500"
+            w="24"
+            className="text-white font-bold"
+            onClick={() => (window.location.href = GITHUB_OAUTH_URI(window.location.href))}
+          >
+            Sign in
+          </Button>
+        )}
       </nav>
 
       <ClientOnly>{() => <Outlet context={{ user }} />}</ClientOnly>

@@ -5,6 +5,7 @@ import { userCookie } from "~/cookies";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const code = new URL(request.url).searchParams.get("code");
+  const state = new URL(request.url).searchParams.get("state");
 
   const { access_token } = await fetch("https://github.com/login/oauth/access_token", {
     method: "POST",
@@ -37,5 +38,6 @@ export const loader = async ({ request }: LoaderArgs) => {
     },
   });
 
+  if (state) return redirect(state, { headers: { "Set-Cookie": await userCookie.serialize(id) } });
   return redirect("/dashboard", { headers: { "Set-Cookie": await userCookie.serialize(id) } });
 };
