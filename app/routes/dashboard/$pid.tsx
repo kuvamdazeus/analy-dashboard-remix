@@ -1,15 +1,16 @@
 import { Box, HStack } from "@chakra-ui/react";
-import { ActionArgs, json, LoaderArgs } from "@remix-run/node";
+import { ActionArgs, json, LoaderArgs, redirect } from "@remix-run/node";
 import DashboardChart from "~/components/Dashboard/DashboardChart";
 import RealtimeStats from "~/components/Dashboard/RealtimeStats";
 import Summary from "~/components/Dashboard/Summary";
 import TopPages from "~/components/Dashboard/TopPages";
 import TopSources from "~/components/Dashboard/TopSources";
 import { getChartData, getPagesSummaryData, getReferrerData, getSummaryData } from "~/helpers/data.server";
-import verifyUser from "~/middlewares/verifyUser";
+import verifyUser, { verifyUserNoRedirect } from "~/middlewares/verifyUser";
 import { client } from "~/prisma-client.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
+  const userId = await verifyUserNoRedirect(request);
   const projectId = new URL(request.url).pathname.split("/").at(-1) as string;
 
   const [project, summaryData, pagesSummaryData, referrerData, chartData] = await Promise.all([
@@ -20,7 +21,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     getChartData(projectId),
   ]);
 
-  if (!project.is_public) await verifyUser(request);
+  if (!project.is_public && project.user_id !== userId) return redirect("/dashboard");
 
   return json({ summaryData, pagesSummaryData, referrerData, chartData }, { status: 200 });
 };

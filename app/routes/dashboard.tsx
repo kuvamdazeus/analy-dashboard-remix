@@ -24,7 +24,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       email: "johndoe@gmail.com",
       username: "johndoe_8734",
       name: "John Doe",
-      projects: [project] as Project[],
+      projects: [],
     };
 
     return json(user as Data);
@@ -53,11 +53,16 @@ export default function Dashboard() {
   }, []);
 
   const displayProjectName = /dashboard\/.+\-.+\-.+/.test(location.pathname);
+  const projectId = location.pathname.split("/").at(-1);
 
   return (
     <div className="h-screen">
       <nav className="px-5 py-5 flex items-center justify-between bg-white border-b border-dashed border-gray-400">
-        {displayProjectName ? <NavProject /> : <div />}
+        {displayProjectName && user.projects.filter((project) => project.id === projectId).length ? (
+          <NavProject />
+        ) : (
+          <div />
+        )}
 
         {user.id && (
           <div className="flex items-center">
