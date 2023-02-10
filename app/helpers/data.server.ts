@@ -3,7 +3,7 @@ import type { Duration } from "~/types";
 
 const getGte = (duration: Duration) => {
   switch (duration) {
-    case "today":
+    case "1d":
       return new Date(Date.now() - 24 * 60 * 60 * 1000);
     case "7d":
       return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
@@ -20,7 +20,7 @@ const getGte = (duration: Duration) => {
   }
 };
 
-export const getSummaryData = async (projectId: string, duration: Duration = "today") => {
+export const getSummaryData = async (projectId: string, duration: Duration = "1d") => {
   const [uniquePageVisits, pageViews, sessions] = await Promise.all([
     client.event.count({
       where: {

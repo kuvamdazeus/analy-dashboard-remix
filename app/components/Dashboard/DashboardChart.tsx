@@ -58,7 +58,7 @@ export default function DashboardChart() {
         >
           {DURATIONS.map(
             ({ label, value }) =>
-              value !== "today" && (
+              value !== "1d" && (
                 <option key={value} value={value}>
                   {label}
                 </option>

@@ -1,7 +1,7 @@
 import { Duration } from "./types";
 
 export const DURATIONS: { label: string; value: Duration }[] = [
-  { label: "Today", value: "today" },
+  { label: "Last 24 hours", value: "1d" },
   { label: "Last week", value: "7d" },
   { label: "Last month", value: "1m" },
   { label: "Last 3 months", value: "3m" },
