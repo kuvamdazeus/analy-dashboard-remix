@@ -12,12 +12,15 @@ import { client } from "~/prisma-client.server";
 export const loader = async ({ request }: LoaderArgs) => {
   const projectId = new URL(request.url).pathname.split("/").at(-1) as string;
 
-  const [summaryData, pagesSummaryData, referrerData, chartData] = await Promise.all([
+  const [project, summaryData, pagesSummaryData, referrerData, chartData] = await Promise.all([
+    client.project.findUniqueOrThrow({ where: { id: projectId } }),
     getSummaryData(projectId),
     getPagesSummaryData(projectId),
     getReferrerData(projectId),
     getChartData(projectId),
   ]);
+
+  if (!project.is_public) await verifyUser(request);
 
   return json({ summaryData, pagesSummaryData, referrerData, chartData }, { status: 200 });
 };
