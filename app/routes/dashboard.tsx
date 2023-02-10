@@ -15,8 +15,6 @@ export const loader = async ({ request }: LoaderArgs) => {
   const userId = await userCookie.parse(request.headers.get("Cookie") || "");
 
   if (!userId) {
-    const projectId = new URL(request.url).pathname.split("/").at(-1) as string;
-
     const user = {
       id: "",
       avatar_url: "",
