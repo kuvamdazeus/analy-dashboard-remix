@@ -39,5 +39,5 @@ export const loader = async ({ request }: LoaderArgs) => {
   });
 
   if (state) return redirect(state, { headers: { "Set-Cookie": await userCookie.serialize(id) } });
-  return redirect("/dashboard", { headers: { "Set-Cookie": await userCookie.serialize(id) } });
+  return redirect("/?redirect=dashboard", { headers: { "Set-Cookie": await userCookie.serialize(id) } });
 };
