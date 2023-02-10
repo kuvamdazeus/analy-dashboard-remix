@@ -10,6 +10,33 @@ export default function DashboardChart() {
   const location = useLocation();
   const chart = useFetcher<typeof getChartData>();
 
+  const getCategories = () => {
+    if (!chart.data) return [];
+
+    const categories = new Set<string>();
+    chart.data.pageViewsChartData.forEach((item) => categories.add(item.date));
+    chart.data.uniqueVisitsChartData.forEach((item) => categories.add(item.date));
+    chart.data.sessionChartData.forEach((item) => categories.add(item.date));
+
+    return Array.from(categories).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  };
+
+  const getSeriesData = (series: { date: string; _count: { _all: number } }[]) => {
+    const categories = getCategories();
+
+    const seriesData = categories.map((category) => {
+      const seriesItem = series.find((item) => item.date === category);
+
+      if (seriesItem) {
+        return seriesItem._count._all;
+      } else {
+        return 0;
+      }
+    });
+
+    return seriesData;
+  };
+
   const options: Highcharts.Options = useMemo(
     () => ({
       title: {
@@ -17,20 +44,31 @@ export default function DashboardChart() {
       },
       series: [
         {
-          data: chart.data ? chart.data.map((item) => item._count._all) : [],
+          data: chart.data ? getSeriesData(chart.data.pageViewsChartData) : [],
           type: "line",
+          name: "Page Views",
+        },
+        {
+          data: chart.data ? getSeriesData(chart.data.uniqueVisitsChartData) : [],
+          type: "line",
+          name: "Unique Page Views",
+        },
+        {
+          data: chart.data ? getSeriesData(chart.data.sessionChartData) : [],
+          type: "line",
+          name: "Sessions",
         },
       ],
       xAxis: {
         type: "category",
         title: {
-          text: "Days",
+          text: "",
         },
-        categories: chart.data ? chart.data.map((item) => item.date) : [],
+        categories: getCategories(),
       },
       yAxis: {
         title: {
-          text: "Views",
+          text: "",
         },
       },
     }),

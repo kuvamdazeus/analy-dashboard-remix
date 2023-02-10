@@ -13,7 +13,7 @@ export default function Summary() {
   };
 
   useEffect(() => {
-    summary.load(`${window.location.pathname}/data?type=summary&duration=today`);
+    summary.load(`${window.location.pathname}/data?type=summary&duration=1d`);
   }, [location]);
 
   return (
@@ -22,7 +22,7 @@ export default function Summary() {
         <p className="text-xl font-bold mr-5">Summary</p>
 
         <Select
-          defaultValue="today"
+          defaultValue="1d"
           onChange={fetchSummaryData}
           borderColor="gray.500"
           w="max-content"

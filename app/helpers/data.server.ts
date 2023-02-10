@@ -4,7 +4,7 @@ import type { Duration } from "~/types";
 const getGte = (duration: Duration) => {
   switch (duration) {
     case "1d":
-      return new Date(Date.now() - 24 * 60 * 60 * 1000);
+      return new Date(Date.now() - 1 * 24 * 60 * 60 * 1000);
     case "7d":
       return new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     case "1m":
@@ -131,28 +131,82 @@ export const getReferrerData = async (projectId: string) => {
 };
 
 export const getChartData = async (projectId: string, duration: Duration = "7d") => {
-  const chartData = await client.event.groupBy({
-    where: {
-      session: {
-        project: {
-          id: projectId,
+  const [pageViewsChartData, uniqueVisitsChartData, groupedSessionData] = await Promise.all([
+    client.event.groupBy({
+      where: {
+        session: {
+          project: {
+            id: projectId,
+          },
+        },
+        name: "page_load",
+        created_at: {
+          gte: getGte(duration),
         },
       },
-      name: "page_load",
-      created_at: {
-        gte: getGte(duration),
+      by: ["date"],
+      orderBy: {
+        date: "asc",
       },
-    },
-    by: ["date"],
-    orderBy: {
-      date: "asc",
-    },
-    _count: {
-      _all: true,
-    },
-  });
+      _count: {
+        _all: true,
+      },
+    }),
+    client.event.groupBy({
+      where: {
+        session: {
+          project: {
+            id: projectId,
+          },
+        },
+        name: "user_init",
+        created_at: {
+          gte: getGte(duration),
+        },
+      },
+      by: ["date"],
+      orderBy: {
+        date: "asc",
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+    client.event.groupBy({
+      where: {
+        session: {
+          project: {
+            id: projectId,
+          },
+        },
+        created_at: {
+          gte: getGte(duration),
+        },
+      },
+      by: ["date", "session_id"],
+      orderBy: {
+        date: "asc",
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+  ]);
 
-  return chartData;
+  const sessionData = new Map<string, { _count: { _all: number } }>();
+  for (let session of groupedSessionData) {
+    const sessionCount = sessionData.get(session.date);
+
+    if (sessionCount) {
+      sessionData.set(session.date, { _count: { _all: sessionCount._count._all + 1 } });
+    } else {
+      sessionData.set(session.date, { _count: { _all: 1 } });
+    }
+  }
+
+  const sessionChartData = Array.from(sessionData).map(([date, data]) => ({ date, ...data }));
+
+  return { pageViewsChartData, uniqueVisitsChartData, sessionChartData };
 };
 
 export const getCountryData = async (projectId: string) => {
