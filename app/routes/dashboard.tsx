@@ -16,7 +16,6 @@ export const loader = async ({ request }: LoaderArgs) => {
 
   if (!userId) {
     const projectId = new URL(request.url).pathname.split("/").at(-1) as string;
-    const project = await client.project.findUniqueOrThrow({ where: { id: projectId } });
 
     const user = {
       id: "",
