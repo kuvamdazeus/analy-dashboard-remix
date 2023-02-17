@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { withEmotionCache } from "@emotion/react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react";
 import type { MetaFunction } from "@remix-run/node";
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import { ServerStyleContext, ClientStyleContext } from "./context";
@@ -20,6 +20,11 @@ export const meta: MetaFunction = () => ({
 interface DocumentProps {
   children: React.ReactNode;
 }
+
+const customTheme = extendTheme({
+  initialColorMode: "light",
+  useSystemColorMode: false,
+});
 
 const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) => {
   const serverStyleData = useContext(ServerStyleContext);
@@ -57,6 +62,7 @@ const Document = withEmotionCache(({ children }: DocumentProps, emotionCache) =>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
         <div
           id="analy-config"
           analy-base-url="http://localhost:3000"

@@ -33,7 +33,7 @@ export default function NavProject() {
       <select
         defaultValue={currentProject?.id}
         onChange={(e) => navigate(`/dashboard/${e.target.value}`)}
-        className="font-semibold min-w-32 rounded border border-gray-500 p-1 focus:outline-none mr-1"
+        className="dark:bg-transparent font-semibold min-w-32 rounded border border-gray-500 p-1 focus:outline-none mr-1"
       >
         {user.projects.map((project) => (
           <option key={project.id} value={project.id}>
