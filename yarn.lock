@@ -3040,6 +3040,14 @@ ajv@^6.10.0, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+analy@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/analy/-/analy-0.2.5.tgz#797b90e527b3fd724ed6a96fe02df130bf3065fc"
+  integrity sha512-cqL/h1zhuyy2/H9zJ4Tmb9nVdLddqIQuKUZfIrRlvnl7UbRASGJZH0+P/cA6uDrERkV5kjJT+3MHbL37/cabZQ==
+  dependencies:
+    crypto-js "^4.1.1"
+    uuid "^9.0.0"
+
 ansi-escapes@^4.2.1:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-4.3.2.tgz#6b2291d1db7d98b6521d5f1efa42d0f3a9feb65e"
