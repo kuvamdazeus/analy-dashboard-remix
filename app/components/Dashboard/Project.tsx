@@ -13,7 +13,7 @@ export default function Project({ project }: Props) {
     <div
       onClick={() => navigate(`/dashboard/${project.id}`)}
       className="
-        bg-white relative border-2 border-black rounded-lg h-48 w-72 p-5 flex flex-col justify-end
+        bg-white dark:bg-gray-800 relative border-2 border-black rounded-lg h-48 w-72 p-5 flex flex-col justify-end
         transition-all duration-100 hover:scale-[1.01] hover:shadow-lg cursor-pointer
       "
     >

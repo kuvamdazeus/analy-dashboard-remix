@@ -16,7 +16,12 @@ export default function TopPages() {
   }, [location]);
 
   return (
-    <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 h-full w-1/2 overflow-y-auto">
+    <Box
+      border="1px"
+      borderColor="gray.100"
+      _dark={{ borderColor: "gray.700" }}
+      className="bg-white dark:bg-gray-800 rounded-lg p-3 h-full w-1/2 overflow-y-auto"
+    >
       <p className="text-xl font-bold mb-5">Top Pages</p>
 
       {pageSummary.data &&
@@ -30,10 +35,12 @@ export default function TopPages() {
               <Box key={pathname} className="relative p-2 mb-1">
                 <Box
                   style={{ width: `${(count / totalPageViews) * 100}%` }}
-                  className="absolute top-0 left-0 z-0 h-full bg-orange-100"
+                  className="absolute top-0 left-0 z-0 h-full bg-green-100 dark:bg-green-600"
                 />
 
-                <p className="sticky text-xs font-light text-gray-700 tracking-wide">{pathname}</p>
+                <p className="sticky text-xs font-light text-gray-700 dark:text-white tracking-wide">
+                  {pathname}
+                </p>
               </Box>
             );
           })}

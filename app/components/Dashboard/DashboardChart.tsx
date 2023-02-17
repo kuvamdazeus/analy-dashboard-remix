@@ -59,6 +59,7 @@ export default function DashboardChart() {
           name: "Sessions",
         },
       ],
+
       xAxis: {
         type: "category",
         title: {
@@ -84,7 +85,14 @@ export default function DashboardChart() {
   }, [location]);
 
   return (
-    <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-1">
+    <Box
+      border="1px"
+      borderColor="gray.100"
+      _dark={{
+        borderColor: "gray.700",
+      }}
+      className="bg-white dark:bg-gray-800 rounded-lg p-1"
+    >
       <Box className="p-5 w-full flex justify-end">
         <Select
           defaultValue="7d"

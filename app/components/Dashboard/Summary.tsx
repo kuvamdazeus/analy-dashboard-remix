@@ -17,7 +17,12 @@ export default function Summary() {
   }, [location]);
 
   return (
-    <Box border="1px" borderColor="gray.100" className="bg-white rounded-lg p-3 h-full w-1/2">
+    <Box
+      border="1px"
+      borderColor="gray.100"
+      _dark={{ borderColor: "gray.700" }}
+      className="bg-white dark:bg-gray-800 rounded-lg p-3 h-full w-1/2"
+    >
       <div className="flex items-center justify-between w-full mb-5">
         <p className="text-xl font-bold mr-5">Summary</p>
 
@@ -38,9 +43,9 @@ export default function Summary() {
       </div>
 
       <Box className="flex justify-between items-center mb-2">
-        <p className="text-sm font-bold text-gray-500 tracking-wide">UNIQUE VISITS</p>
+        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 tracking-wide">UNIQUE VISITS</p>
 
-        <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
+        <Box className="bg-gray-200 dark:bg-gray-100 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
           <p className="mr-3">{summary.data && summary.data.uniquePageVisits}</p>
 
           <p>-</p>
@@ -48,9 +53,9 @@ export default function Summary() {
       </Box>
 
       <Box className="flex justify-between items-center mb-2">
-        <p className="text-sm font-bold text-gray-500 tracking-wide">PAGE VIEWS</p>
+        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 tracking-wide">PAGE VIEWS</p>
 
-        <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
+        <Box className="bg-gray-200 dark:bg-gray-100 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
           <p className="mr-3">{summary.data && summary.data.pageViews}</p>
 
           <p>-</p>
@@ -58,9 +63,9 @@ export default function Summary() {
       </Box>
 
       <Box className="flex justify-between items-center mb-2">
-        <p className="text-sm font-bold text-gray-500 tracking-wide">SESSION COUNT</p>
+        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 tracking-wide">SESSION COUNT</p>
 
-        <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
+        <Box className="bg-gray-200 dark:bg-gray-100 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
           <p className="mr-3">{summary.data && summary.data.sessionsCount}</p>
 
           <p>-</p>
@@ -68,9 +73,9 @@ export default function Summary() {
       </Box>
 
       <Box className="flex justify-between items-center mb-2">
-        <p className="text-sm font-bold text-gray-500 tracking-wide">AVG. SESSION TIME</p>
+        <p className="text-sm font-bold text-gray-500 dark:text-gray-400 tracking-wide">AVG. SESSION TIME</p>
 
-        <Box className="bg-gray-200 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
+        <Box className="bg-gray-200 dark:bg-gray-100 text-xs font-bold rounded-sm p-1 flex items-center justify-between text-gray-800">
           <p className="mr-3">{summary.data && Math.round(summary.data.avgSessionsDuration)}s</p>
 
           <p>-</p>

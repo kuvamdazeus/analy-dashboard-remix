@@ -1,4 +1,4 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, useColorMode } from "@chakra-ui/react";
 import { ActionArgs, json, LoaderArgs, redirect } from "@remix-run/node";
 import DashboardChart from "~/components/Dashboard/DashboardChart";
 import RealtimeStats from "~/components/Dashboard/RealtimeStats";
@@ -43,8 +43,12 @@ export const action = async ({ request }: ActionArgs) => {
 };
 
 export default function DashboardProject() {
+  const { colorMode } = useColorMode();
+
+  const color = colorMode === "light" ? "" : "dark";
+
   return (
-    <Box className="p-5 bg-gray-100">
+    <Box className={`${color} p-5 bg-gray-100 dark:bg-gray-900`}>
       <HStack spacing="5" mb="5" h="64">
         <Summary />
 

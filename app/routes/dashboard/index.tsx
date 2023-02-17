@@ -1,4 +1,4 @@
-import { Divider, HStack } from "@chakra-ui/react";
+import { Divider, HStack, useColorMode } from "@chakra-ui/react";
 import { LoaderArgs, json, ActionArgs, redirect } from "@remix-run/node";
 import { useOutletContext } from "@remix-run/react";
 import { SHA256 } from "crypto-js";
@@ -39,8 +39,12 @@ export const action = async ({ request }: ActionArgs) => {
 export default function Index() {
   const { user } = useOutletContext<OutletContext>();
 
+  const { colorMode } = useColorMode();
+
+  const color = colorMode === "light" ? "" : "dark";
+
   return (
-    <section className="p-5">
+    <section className={`${color} p-5`}>
       <HStack flexWrap="wrap" alignItems="center" spacing={5}>
         {user.projects.map((project) => (
           <Project key={project.id} project={project} />

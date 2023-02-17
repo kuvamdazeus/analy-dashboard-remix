@@ -59,7 +59,7 @@ export default function Dashboard() {
 
   return (
     <div className={`${color} h-screen`}>
-      <nav className="px-5 py-5 flex items-center justify-between bg-white dark:bg-gray-900 border-b border-dashed border-gray-400 dark:border-gray-200">
+      <nav className="px-5 py-5 flex items-center justify-between bg-white dark:bg-gray-900 border-b border-dashed border-gray-400 dark:border-gray-500">
         {displayProjectName && user.projects.filter((project) => project.id === projectId).length ? (
           <NavProject />
         ) : (
@@ -69,7 +69,7 @@ export default function Dashboard() {
         <div className="flex items-center">
           {user.id && (
             <div className="flex items-center">
-              <div className="border border-gray-100 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 rounded p-1 pr-3 -mr-2.5">
+              <div className="border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded p-1 pr-3 -mr-2.5">
                 <p className="text-sm font-bold">
                   <span className="text-md text-gray-500 mr-0.5 font-bold">@</span>
                   {user.username}
